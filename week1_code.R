@@ -1,5 +1,5 @@
 
-
+## yang ini bisa
 if(!file.exists("data")) {
   dir.create("data")
 }
@@ -15,6 +15,10 @@ head(cameraData)
 cameraData <- read.csv("../data/cameras.csv")
 head(cameraData)
 
+## -----
+
+## yang ini ga bisa, krn ga ada file yg xlsx
+
 fileUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.xlsx?accessType=DOWNLOAD"
 download.file(fileUrl, destfile = "../data/cameras.xlsx")
 list.files("./data")
@@ -23,6 +27,7 @@ dateDownload <- date()
 library(xlsx)
 cameraData <- read.xlsx("../data/cameras.xlsx", sheetIndex = 1, header = TRUE)
 head(cameraData)
+## ---
 
 fileUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.xml?accessType=DOWNLOAD"
 download.file(fileUrl, destfile = "../data/cameras.xml")
