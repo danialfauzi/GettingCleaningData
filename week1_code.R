@@ -29,17 +29,21 @@ cameraData <- read.xlsx("../data/cameras.xlsx", sheetIndex = 1, header = TRUE)
 head(cameraData)
 ## ---
 
+## Ini bisa
 fileUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.xml?accessType=DOWNLOAD"
 download.file(fileUrl, destfile = "../data/cameras.xml")
 list.files("./data")
 dateDownload <- date()
+## --
 
-cameraData <- read.table("../data/cameras.tsv", sep = ";", header = TRUE)
+## Belum tau bagaimana cara baca data XML
+cameraData <- read.table("../data/cameras.xml", sep = ";", header = TRUE)
 head(cameraData)
 
+## --
+
 library(XML)
-fileUrl <- "http://www.w3schools.com/xml/simple.xml"
-doc <- xmlTreeParse(fileUrl, useInternal = TRUE)
-doc <- xmlTreeParse(fileUrl)
+fileUrl <- "https://www.w3schools.com/xml/simple.xml"
+doc <- xmlTreeParse(fileUrl, useInternal = TRUE) ## Ga ada "useInternal
 rootNode <- xmlRoot(doc)
 xmlName(rootNode)
