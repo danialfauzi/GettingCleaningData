@@ -42,8 +42,14 @@ head(cameraData)
 
 ## --
 
+## Ini Bisa
 library(XML)
+library(RCurl)
 fileUrl <- "https://www.w3schools.com/xml/simple.xml"
-doc <- xmlTreeParse(fileUrl, useInternal = TRUE) ## Ga ada "useInternal
+xData <- getURL(fileUrl)
+doc <- xmlTreeParse(xData)
+## doc <- xmlTreeParse(fileUrl, useInternal = TRUE) ## Ga ada "useInternal
 rootNode <- xmlRoot(doc)
+## ini bisa
+
 xmlName(rootNode)
