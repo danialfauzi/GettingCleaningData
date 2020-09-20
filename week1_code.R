@@ -70,6 +70,8 @@ head(name)
 
 ## ---
 
+## Belum berhasil. Perbaikannya ada di https://github.com/lgreski/datasciencectacontent/blob/master/markdown/cleaningData-demystifyingHTMLParsing.md
+
 install.packages("HTML")
 library(htmltools)
 library("RCurl")
@@ -91,9 +93,9 @@ teams <- xpathSApply(doc, "//li[@class='team-name']", xmlValue)
 head(teams); head(scores)
 
 
-fileUrl <- 'http://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens'
+fileUrl <- "http://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens"
 xData <- getURL(fileUrl)
-doc <- htmlTreeParse(xData, useInternalNodes=TRUE)
+doc <- htmlTreeParse(fileUrl, useInternalNodes=FALSE)
 scores <- xpathSApply(doc, "//div[@class='score']", xmlValue)
 teams <- xpathSApply(doc, "//div[@class='team-name']", xmlValue)
 head(teams); head(scores)
@@ -115,6 +117,8 @@ page <- read_html("http://www.espn.com/nfl/team/_/name/bal/baltimore-ravens")
 ravens_html <- html_nodes(x = page, css = "div#main-container , footer, .standings a, .standings header, td")
 html_text(ravens_html)
 
+## --
+
 
 ## Berhasil
 
@@ -127,5 +131,7 @@ head(scores)
 
 ##---
 
-
+library(jsonlite)
+jsonData <- fromJSON("https://api.github.com/users/jtleek/repos")
+names(jsonData)
 
