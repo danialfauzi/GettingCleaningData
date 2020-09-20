@@ -50,6 +50,82 @@ xData <- getURL(fileUrl)
 doc <- xmlTreeParse(xData)
 ## doc <- xmlTreeParse(fileUrl, useInternal = TRUE) ## Ga ada "useInternal
 rootNode <- xmlRoot(doc)
-## ini bisa
-
 xmlName(rootNode)
+names(rootNode)
+rootNode[[2]][[2]]
+xmlSApply(rootNode,xmlValue)
+xmlSApply(rootNode[[2]],xmlValue)
+## http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf
+xpathSApply(rootNode,"//name", xmlValue) ## ga bisa
+xpathSApply(rootNode,"//price",xmlValue); ## ga bisa
+
+install.packages("xml2")
+library(xml2);
+xmlDoc <- read_xml(xData)
+prices <- xml_find_all(xmlDoc,"//price")
+head(prices)
+
+name <- xml_find_all(xmlDoc,"//name")
+head(name)
+
+## ---
+
+install.packages("HTML")
+library(htmltools)
+library("RCurl")
+library("XML")
+fileUrl <- "https://espn.go.com/nfl/team/_/name/bal/baltimore-ravens"
+doc <- htmlTreeParse(fileUrl, useInternal = TRUE)
+
+scores <- xpathSApply(doc, "//div[@class='score']",xmlValue);head(scores)
+teams <- xpathSApply(doc, "//div[@class='game-info']",xmlValue);head(teams)
+
+data <- htmlParse("http://www.espn.com/nfl/team/_/name/bal/baltimore-ravens")
+readHTMLTable(data)[2]
+
+fileUrl <- "http://www.espn.com/college-football/team/schedule/_/id/194"
+xData <- getURL(fileUrl)
+doc <- htmlTreeParse(xData, useInternalNodes = TRUE)
+scores <- xpathSApply(doc, "//li[@class='score']", xmlValue)
+teams <- xpathSApply(doc, "//li[@class='team-name']", xmlValue)
+head(teams); head(scores)
+
+
+fileUrl <- 'http://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens'
+xData <- getURL(fileUrl)
+doc <- htmlTreeParse(xData, useInternalNodes=TRUE)
+scores <- xpathSApply(doc, "//div[@class='score']", xmlValue)
+teams <- xpathSApply(doc, "//div[@class='team-name']", xmlValue)
+head(teams); head(scores)
+
+fileUrl = "http://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens"
+xData <- getURL(fileUrl)
+doc <- htmlTreeParse(xData, useInternalNodes=TRUE)
+scores <- xpathSApply(doc, "//div[@class='score']", xmlValue)
+
+gameStatus <- c("//div[@class='game-status loss']","//div[@class='game-status win']")
+
+result <- xpathSApply(doc, gameStatus, xmlValue)
+
+opponent <- xpathSApply(doc,"//div[@class='team-name']", xmlValue)
+
+
+library(rvest)
+page <- read_html("http://www.espn.com/nfl/team/_/name/bal/baltimore-ravens")
+ravens_html <- html_nodes(x = page, css = "div#main-container , footer, .standings a, .standings header, td")
+html_text(ravens_html)
+
+
+## Berhasil
+
+library(xml2)
+suppressWarnings(dx<-read_xml("https://www.espn.com/nfl/team/_/name/bal/baltimore-ravens", as_html=TRUE))
+teams<-as.character(xml_contents(xml_find_all(dx,"//div[@class='game-info']")))
+scores<-as.character(xml_contents(xml_find_all(dx,"//div[@class='score']")))
+head(teams)
+head(scores)
+
+##---
+
+
+
