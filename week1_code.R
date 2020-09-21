@@ -225,3 +225,6 @@ DT <- data.table::fread("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2F
 
 # Answer (fastest):
 system.time(DT[,mean(pwgtp15),by=SEX])
+
+## https://rstudio-pubs-static.s3.amazonaws.com/398911_0a0d9db3ac174b10a0fb52069f98e172.html
+## https://rpubs.com/Jerry_zhu/136168
