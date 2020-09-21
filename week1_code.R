@@ -131,7 +131,97 @@ head(scores)
 
 ##---
 
+## Berhasil
 library(jsonlite)
 jsonData <- fromJSON("https://api.github.com/users/jtleek/repos")
 names(jsonData)
+## Berhasil
 
+## Berhasil
+install.packages("data.table")
+library(data.table)
+DF = data.frame(x = rnorm(9), y =rep(c("a","b","c"), each = 3), z = rnorm(9))
+head(DF,3)
+
+DT = data.table(x = rnorm(9), y =rep(c("a","b","c"), each = 3), z = rnorm(9))
+head(DT,3)
+
+tables()
+
+DT[2,]
+
+DT[DT$y == "a",]
+
+DT[c(2,3)]
+DT[,c(2,3)]
+
+{
+  x = 1
+  y = 2
+}
+k = {print(10); 5}
+print(k)
+
+DT[, list(mean(x),sum(z))]
+DT[, table(y)]
+
+DT[,w:=z^2]; head(DT); DT
+
+DT[, m := {tmp <-  x+z; log2(tmp+5)}]; DT
+
+DT[, a := x>0]; DT
+DT[, b := mean(x+w), by = a]; DT
+
+set.seed(123)
+DT <- data.table(x = sample(letters[1:3], 1E5, TRUE))
+DT[, .N, by = x]; DT
+
+DT <- data.table(x = rep(c("a","b","c"), each = 100), y = rnorm(300))
+setkey(DT, x)
+DT['a']
+
+DT1 <- data.table(x = c('a', 'a', 'b', 'dt1'), y = 1:4)
+DT2 <- data.table(x = c('a', 'b', 'dt2'), z = 5:7)
+setkey(DT1, x); setkey(DT2, x)
+merge(DT1, DT2)
+
+big_df <- data.frame(x = rnorm(1E6), y = rnorm(1E6))
+file <- tempfile()
+write.table(big_df, file = file, row.names = FALSE, col.names = TRUE, sep = "\t", quote = FALSE)
+system.time(fread(file))
+system.time(read.table(file, header = TRUE, sep = "\t"))
+## Berhasil
+
+## Quizz 1
+## Q1
+library(data.table)
+housing <- data.table::fread("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv")
+
+## https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf
+# VAL attribute says how much property is worth, .N is the number of rows
+# VAL == 24 means more than $1,000,000
+housing[VAL == 24, .N]
+
+## Q3
+fileUrl <- "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx"
+download.file(fileUrl, destfile = paste0(getwd(), '/getdata%2Fdata%2FDATA.gov_NGAP.xlsx'), method = "curl")
+
+dat <- xlsx::read.xlsx(file = "getdata%2Fdata%2FDATA.gov_NGAP.xlsx", sheetIndex = 1, rowIndex = 18:23, colIndex = 7:15)
+sum(dat$Zip*dat$Ext,na.rm=T)
+
+## Q4
+# install.packages("XML")
+library("XML")
+fileURL<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+doc <- XML::xmlTreeParse(sub("s", "", fileURL), useInternal = TRUE)
+rootNode <- XML::xmlRoot(doc)
+
+zipcodes <- XML::xpathSApply(rootNode, "//zipcode", XML::xmlValue)
+xmlZipcodeDT <- data.table::data.table(zipcode = zipcodes)
+xmlZipcodeDT[zipcode == "21231", .N]
+
+## Q5
+DT <- data.table::fread("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv")
+
+# Answer (fastest):
+system.time(DT[,mean(pwgtp15),by=SEX])
