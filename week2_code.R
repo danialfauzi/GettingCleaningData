@@ -73,6 +73,54 @@ attr(B, "scale") <- "liter"
 h5write(B, "example.h5","foo/foobaa/B")
 h5ls("example.h5")
 
+## Quiz soal nomor 1. run di base R package and not R studio.
+#install.packages("jsonlite")
+#install.packages("httpuv")
+#install.packages("httr")
+
+library(jsonlite)
+library(httpuv)
+library(httr)
+
+# Can be github, linkedin etc depending on application
+oauth_endpoints("github")
+
+# Change based on your appname, key, and secret 
+myapp <- oauth_app("AyoGabung",
+                   key = "3b5ab8823396ef70f00c",
+                   secret = "275f63ec45fca76f8876b7e184ad3baf05888e34")
+
+# Get OAuth credentials
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+
+# Use API
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+
+# Take action on http error
+stop_for_status(req)
+
+# Extract content from a request
+json1 = content(req)
+
+# Convert to a data.frame
+gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
+
+# Subset data.frame
+gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
+
+### Quiz soal nomor2
+install.packages("sqldf")
+library("sqldf")
+
+url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
+f <- file.path(getwd(), "ss06pid.csv")
+download.file(url, f)
+acs <- data.table::data.table(read.csv(f)); 
+query1 <- sqldf("select pwgtp1 from acs where AGEP < 50"); query1
+
+## https://github.com/mGalarnyk/datasciencecoursera/blob/master/3_Getting_and_Cleaning_Data/quizzes/quiz2.md
+## https://github.com/r-lib/httr/blob/master/demo/oauth2-github.r
 
 
 
