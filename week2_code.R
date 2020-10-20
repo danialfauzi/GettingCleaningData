@@ -116,11 +116,36 @@ library("sqldf")
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
 f <- file.path(getwd(), "ss06pid.csv")
 download.file(url, f)
+# install.packages("data.table"); library(data.table)
 acs <- data.table::data.table(read.csv(f)); 
 query1 <- sqldf("select pwgtp1 from acs where AGEP < 50"); query1
 
 ## https://github.com/mGalarnyk/datasciencecoursera/blob/master/3_Getting_and_Cleaning_Data/quizzes/quiz2.md
 ## https://github.com/r-lib/httr/blob/master/demo/oauth2-github.r
+
+## quizz soal nomor3
+unique(acs$AGEP)
+sqldf("select distinct AGEP from acs")
+
+## quizz soal nomor 4
+connection <- url("http://biostat.jhsph.edu/~jleek/contact.html")
+htmlCode <- readLines(connection)
+close(connection)
+c(nchar(htmlCode[10]), nchar(htmlCode[20]), nchar(htmlCode[30]), nchar(htmlCode[100]))
+
+## quizz soal nomor 5
+url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for"
+lines <- readLines(url, n = 10)
+w <- c(1, 9, 5, 4, 1, 3, 5, 4, 1, 3, 5, 4, 1, 3, 5, 4, 1, 3)
+colNames <- c("filler", "week", "filler", "sstNino12", "filler", "sstaNino12", 
+              "filler", "sstNino3", "filler", "sstaNino3", "filler", "sstNino34", "filler", 
+              "sstaNino34", "filler", "sstNino4", "filler", "sstaNino4")
+d <- read.fwf(url, w, header = FALSE, skip = 4, col.names = colNames)
+d <- d[, grep("^[^filler]", names(d))]
+sum(d[, 4])
+
+
+
 
 
 
