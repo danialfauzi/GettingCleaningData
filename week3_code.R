@@ -12,3 +12,8 @@ sort(X$var1,decreasing = TRUE)
 sort(X$var2, na.last = TRUE) ##Meletakkan NA pada akhir
 sort(X$var2, na.last = FALSE) ##Meletakkan NA pada awal
 X[order(X$var1),] ##Mengurutkan var 1
+X[order(X$var1,X$var3),] ##Mengurutkan var 1
+
+install.packages("plyr")
+library(plyr)
+arrange(X,var1) #Sorting berdasarkan var 1
